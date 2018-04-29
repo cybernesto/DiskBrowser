@@ -228,6 +228,11 @@ abstract class AbstractCatalogEntry implements AppleFileSource
             else
               appleFile = new AssemblerProgram (name, exactBuffer, loadAddress);
           }
+          else if ((loadAddress == 0x5800       //
+              || loadAddress == 0x6000          //
+              || loadAddress == 0x7800)         //
+              && reportedLength == 0x240)
+            appleFile = new PrintShopGraphic (name, exactBuffer);
           else
           {
             appleFile = new AssemblerProgram (name, exactBuffer, loadAddress);
@@ -274,7 +279,7 @@ abstract class AbstractCatalogEntry implements AppleFileSource
     byte[] exactBuffer;
 
     //    int loadAddress = HexFormatter.intValue (buffer[0], buffer[1]);
-    int loadAddress = HexFormatter.unsignedShort (buffer, 0);
+    //    int loadAddress = HexFormatter.unsignedShort (buffer, 0);
     //    int reportedLength = HexFormatter.intValue (buffer[2], buffer[3]);
     int reportedLength = HexFormatter.unsignedShort (buffer, 2);
     if (reportedLength == 0)
